@@ -24,7 +24,7 @@ salt = bcrypt.gensalt(rounds=12)
 
 # Create your views here.
 
-
+@custom_login_required
 def signOut(request):
     response = redirect('signin')
     response.delete_cookie('auth_token')

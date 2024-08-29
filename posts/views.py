@@ -101,13 +101,13 @@ class CommentReply(View):
 
 
 
-@method_decorator(custom_login_required)
+@custom_login_required
 def delete_post(request, post_id):
     post = Posts.objects.get(id=post_id)
     post.delete()
     return redirect('home')
 
-@method_decorator(custom_login_required)
+@custom_login_required
 def like_post(request, post_id):
     token = request.COOKIES.get('auth_token')
     payload = decode_jwt(token)
@@ -123,7 +123,7 @@ def like_post(request, post_id):
         post.likes.add(user)
         return redirect('home')
 
-@method_decorator(custom_login_required)
+@custom_login_required
 def save_post(request, post_id):
     token = request.COOKIES.get('auth_token')
     payload = decode_jwt(token)
@@ -139,7 +139,7 @@ def save_post(request, post_id):
         post.saves.add(user)
         return redirect('home')
     
-@method_decorator(custom_login_required)
+@custom_login_required
 def delete_comment(request, comment_id):
     comment = Comments.objects.get(id=comment_id)
     post_id = comment.post.id
@@ -147,7 +147,7 @@ def delete_comment(request, comment_id):
     comment.delete()
     return redirect('create_comment', post_id)
 
-custom_login_required
+@custom_login_required
 def comment_like(request, comment_id):
     token = request.COOKIES.get('auth_token')
     payload = decode_jwt(token)
