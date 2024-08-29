@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reply on Comments</title>
+</head>
+<body>
+    <a href="{% url "home" %}">Home</a>
+    <p>{{comment.comment_text | safe}}</p>
+    <div>
+        <ul>
+            {% for reply in replies %}
+            <li>
+                <h4>{{reply.name.first_name}}</h4>
+                <strong>{{reply.comment_text | safe}}</strong>
+                {% if reply.name == user %}
+                <h6><a href="{% url "delete_comment" reply.id %}">Delete Reply</a></h6>
+                {% endif %}  
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% if comment.relpy.id == id %}{% endif %}
+    <form action="{% url "comment_reply" comment.id %}" method="post">
+        {% csrf_token %}
+        <label for="reply"></label>
+        <textarea name="reply" id="reply"></textarea>
+
+        <button type='submit'>Send Reply</button>
+    </form>
+    <script>
+        CKEDITOR.replace('reply');
+    </script>
+</body>
+</html>

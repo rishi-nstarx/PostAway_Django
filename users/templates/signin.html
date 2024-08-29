@@ -1,0 +1,26 @@
+<p>welcome to sign in page of PostAway</p>
+
+<body>
+    {% if error %}
+    <h2>You got an error:</h2>
+    <p>{{error}}</p>
+    <strong>If you have forgot your password: <a href="{% url "forgot_password" %}">Click here</a></strong>
+    {% endif %}
+
+
+    <form action="{% url 'signin' %}" method="POST">
+        {% csrf_token %}
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required placeholder="Enter the Username">
+        <br>
+    
+        <label for="password">Password:</label>
+        <input type="password" for="password" name="password" required placeholder="Enter the Password">
+        <br>
+        <br>
+    
+        <input type="submit" value="Sign In">
+    </form>
+
+    <strong>Don't have an accout? <a href="{% url 'signup' %}">Create here</a></strong>
+</body>

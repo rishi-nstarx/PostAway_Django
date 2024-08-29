@@ -1,0 +1,34 @@
+{% load static %}
+<h1>Welcome to Home Page of PostAway</h1>
+<h2>Hi {{user.first_name}}</h2>
+<h4><a href="{% url "edit_profile" %}">edit you profile</a></h4>
+<h4><a href="{% url "change_password" %}">Change your password here</a></h4>
+<strong>You can signout here: <a href="{% url 'signout' %}">Sign Out</a></strong>
+
+<h3>Create Post: <a href="{% url "create_post" %}">Click here</a></h3>
+<div>
+    <ul>
+       {% for post in posts %}
+       <li>
+        <strong>{{post.user.first_name}}</strong>
+        <h2>{{post.title}}</h2>
+        <div>
+            {{ post.content|safe }}  <!-- This will render the HTML content properly -->
+        </div>
+        <div>
+        {% if post.image %}
+        <img src="{{post.image.url}}" alt="img"><br>
+        {% endif %}
+        </div>
+        
+        <span><a href="{% url "like_post" post.id %}">Likes:</a>{{post.total_likes}}</span>
+        <span><a href="{% url "create_comment" post.id %}">Comments:</a>{{post.total_comments}}</span>
+        <span><a href="{% url "save_post" post.id %}">Saves:</a>{{post.total_save}}</span><br>
+        {% if post.user == user %}
+        <strong><a href="{% url "delete_post" post.id %} ">Delete the post</a></strong>
+        {% endif %}
+       </li>
+       <br><br>
+       {% endfor %}
+    </ul>
+</div>

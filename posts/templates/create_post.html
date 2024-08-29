@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Post</title>
+    <script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
+    
+</head>
+<body>
+    <a href="{% url "home" %}">Home</a>
+    <strong>What's in your mind today...!</strong>
+    <form action="" method="POST" enctype='multipart/form-data'>
+        {% csrf_token %}
+        <br>
+        <label for="image">Put an image</label>
+        <input type="file" name="image" id="image" accept="image/*">
+        <br><br>
+
+        <label for="title">Give the title:</label>
+        <input type="text" id="title" name="title">
+        <br><br>
+
+        <label for="content">Give the description</label>
+        <textarea id="content" name="content"></textarea>
+        <br><br>
+
+        <button type="submit">Post</button>
+    </form>
+    <script>
+        CKEDITOR.replace('content');
+    </script>
+</body>
+</html>

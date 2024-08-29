@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Comment</title>
+    <script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
+</head>
+<body>
+    {% comment %} Post section {% endcomment %}
+    <a href="{% url "home" %}">Home</a>
+    <div>
+        <strong>{{post.user.first_name}}</strong>
+        <h2>{{post.title}}</h2>
+        <div>
+            {{ post.content|safe }}  <!-- This will render the HTML content properly -->
+        </div>
+        {% if post.image %}
+        <img src="{{post.image.url}}" alt="img"><br>
+        {% endif %}
+        <span><a href="{% url "like_post" post.id %}">Likes:</a>{{post.total_likes}}</span>
+        <span><a href="{% url "create_comment" post.id %}">Comments:</a>{{post.total_comments}}</span>
+        <span><a href="{% url "save_post" post.id %}">Saves:</a>{{post.total_save}}</span><br>
+        {% if post.user == user %}
+        <strong><a href="{% url "delete_post" post.id %} ">Delete the post</a></strong>
+        {% endif %}
+    </div>
+
+
+{% comment %} Comments list {% endcomment %}
+    {% if comments %}
+    <div>
+        <ul>
+            {% for comment in comments %}
+            <li>
+            <h4>{{comment.name.first_name}}</h4>
+            <strong>{{comment.comment_text | safe}}</strong>
+
+            <span><a href="{% url "comment_like" comment.id %}">Likes:{{comment.likes.count}}</a></span>
+            <span><a href="{% url "comment_reply" comment.id %}">Reply:</a>{{comment.reply_on_comments.count}}</span>
+
+            {% if comment.name == user %}
+            <h6><a href="{% url "delete_comment" comment.id %}">Delete Comment</a></h6>
+            {% endif %}
+
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    
+    {% comment %} Create Comment Section {% endcomment %}
+    
+    <div>
+        <form action="{% url "create_comment" post.id %}" method='post'>
+            {% csrf_token %}
+            <label for="comment_text">Write the comment here</label><br>
+            <textarea name="comment_text" id="comment_text"></textarea>
+    
+            <button type="submit">Post</button>
+        </form>
+    </div>
+    <script>
+        CKEDITOR.replace('comment_text');
+    </script>
+</body>
+</html>
